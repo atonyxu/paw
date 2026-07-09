@@ -98,7 +98,7 @@ XSTARTUP
     # === 阶段2: 服务启动 (无论是否重装都检查并补启) ===
     if [ "$VNC_RUNNING" = false ]; then
         echo "🖥️ 正在启动 VNC 服务..."
-        vncserver -geometry 1920x1080 -depth 24
+        vncserver -geometry 1600x900 -depth 24
     else
         echo "✅ VNC 服务已在运行"
     fi
