@@ -1,4 +1,3 @@
-cat > codespaces-lxqt-desktop.sh << 'EOF'
 #!/bin/bash
 
 # ========================
@@ -144,6 +143,3 @@ case "${1:-install}" in
         exit 1
         ;;
 esac
-EOF
-
-chmod +x codespaces-lxqt-desktop.sh
