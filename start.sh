@@ -71,7 +71,7 @@ XSTARTUP
 
     # 4. 启动 VNC 服务
     echo "🖥️ 正在启动 VNC 服务..."
-    vncserver -geometry 1280x720 -depth 24
+    vncserver -geometry 1600x900 -depth 24
 
     # 5. 启动 noVNC 代理
     echo "🌐 正在启动 noVNC 代理..."
