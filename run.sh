@@ -16,8 +16,8 @@ DETECT_STATE() {
         FALKON_INSTALLED=true
     fi
     
-    # 2. 检测 VNC Server 是否运行
-    if pgrep -x "Xvnc" > /dev/null; then
+    # 2. 检测 VNC Server 是否运行 (检查 :1 显示编号)
+    if pgrep -f "Xvnc.*:1" > /dev/null; then
         VNC_RUNNING=true
     fi
     
@@ -32,7 +32,7 @@ DIAGNOSE() {
     echo "=== 🔍 环境诊断报告 ==="
     echo "--- 组件状态 ---"
     $FALKON_INSTALLED && echo "✅ Falkon 浏览器: 已安装" || echo "❌ Falkon 浏览器: 未安装"
-    $VNC_RUNNING && echo "✅ VNC Server: 运行中" || echo "❌ VNC Server: 未运行"
+    $VNC_RUNNING && echo "✅ VNC Server (:1): 运行中" || echo "❌ VNC Server (:1): 未运行"
     $NOVNC_RUNNING && echo "✅ noVNC Proxy: 运行中" || echo "❌ noVNC Proxy: 未运行"
     
     echo "--- VNC / 桌面进程 ---"
@@ -97,7 +97,9 @@ XSTARTUP
     # === 阶段2: 服务启动 (无论是否重装都检查并补启) ===
     if [ "$VNC_RUNNING" = false ]; then
         echo "🖥️ 正在启动 VNC 服务..."
-        vncserver -geometry 1920x1080 -depth 24
+        # 修改点1: 显式指定 :1 显示编号
+        vncserver -kill :1 2>/dev/null
+        vncserver :1 -geometry 1600x900 -depth 24
     else
         echo "✅ VNC 服务已在运行"
     fi
@@ -124,7 +126,8 @@ XSTARTUP
 
 RESTART() {
     echo "🔄 正在重启所有服务..."
-    pkill -x Xvnc 2>/dev/null
+    # 修改点2: 更精确地杀掉 :1 显示编号的进程
+    pkill -f "Xvnc.*:1" 2>/dev/null
     pkill -f novnc_proxy 2>/dev/null
     sleep 1
     INSTALL
